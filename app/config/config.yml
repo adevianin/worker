@@ -92,3 +92,7 @@ old_sound_rabbit_mq:
             exchange_options: {name: 'tasks', type: fanout}
             queue_options:    {name: ''}
             callback:         converter
+    producers:
+        results:
+            connection:       default
+            exchange_options: {name: 'results', type: fanout}

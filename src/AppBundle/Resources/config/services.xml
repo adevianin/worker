@@ -6,6 +6,7 @@
  	<services>
 
 		<service id="converter" class="AppBundle\Consumers\ConvertAudioConsumer">
+			<argument type="service" id="old_sound_rabbit_mq.results_producer" />
 	    </service>
 
     </services>
