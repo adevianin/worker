@@ -76,10 +76,10 @@ swiftmailer:
 old_sound_rabbit_mq:
     connections:
         default:
-            host:     '127.0.0.1'
-            port:     5672
-            user:     'guest'
-            password: 'guest'
+            host:     "%rabbit_connection.address%"
+            port:     "%rabbit_connection.port%"
+            user:     "%rabbit_connection.login%"
+            password: "%rabbit_connection.pass%"
             vhost:    '/'
             lazy:     false
             connection_timeout: 3
@@ -92,7 +92,3 @@ old_sound_rabbit_mq:
             exchange_options: {name: 'tasks', type: fanout}
             queue_options:    {name: ''}
             callback:         converter
-    producers:
-        results:
-            connection:       default
-            exchange_options: {name: 'results', type: fanout}
