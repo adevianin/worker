@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: "@AppBundle/Resources/config/services.xml" }
 
 framework:
     #esi:             ~
@@ -71,3 +72,23 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+old_sound_rabbit_mq:
+    connections:
+        default:
+            host:     "%rabbit_connection.address%"
+            port:     "%rabbit_connection.port%"
+            user:     "%rabbit_connection.login%"
+            password: "%rabbit_connection.pass%"
+            vhost:    '/'
+            lazy:     false
+            connection_timeout: 3
+            read_write_timeout: 3
+            keepalive: false
+            heartbeat: 0
+    consumers:
+        converter:
+            connection:       default
+            exchange_options: {name: 'tasks', type: fanout}
+            queue_options:    {name: ''}
+            callback:         converter

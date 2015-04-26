@@ -18,3 +18,8 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+    rabbit_connection.address: '127.0.0.1'
+    rabbit_connection.port: 5672
+    rabbit_connection.login: null
+    rabbit_connection.pass: null
