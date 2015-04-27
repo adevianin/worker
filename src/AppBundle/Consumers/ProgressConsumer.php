@@ -18,10 +18,18 @@ class ProgressConsumer implements ConsumerInterface
     {
         $uid = (string) unserialize($msg->body);
 
-        $convertingProgress = parse_ini_file($this->getPathToTemp().$uid.'.progress');
-        $fileInfo = parse_ini_file($this->getPathToTemp().$uid.'.info');
+        $convProgressFilePath = $this->getPathToTemp().$uid.'.progress';
+        $fileInfoPath = $this->getPathToTemp().$uid.'.info';
 
-        return $this->statusChecker->culcProgress($convertingProgress, $fileInfo);
+        $progress = 0;
+        if (file_exists($convProgressFilePath) && file_exists($fileInfoPath)) {
+            $convertingProgress = parse_ini_file($convProgressFilePath);
+            $fileInfo = parse_ini_file($fileInfoPath);
+
+            $progress = $this->statusChecker->culcProgress($convertingProgress, $fileInfo);
+        }
+
+        return $progress;
     }
 
     private function getPathToTemp()
