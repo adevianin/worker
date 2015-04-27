@@ -5,14 +5,27 @@ namespace AppBundle\Consumers;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 
-class StatusConsomer implements ConsumerInterface
+class StatusConsumer implements ConsumerInterface
 {
+    private $statusChecker;
+
+    public function __construct($statusChecker)
+    {
+        $this->statusChecker = $statusChecker;
+    }
+
     public function execute(AMQPMessage $msg)
     {
-    	var_dump(123);
-    	$msg = new AMQPMessage(32, array('correlation_id' => $req->get('correlation_id')));
-	
-	    $req->delivery_info['channel']->basic_publish($msg, '', $req->get('reply_to'));
-	    $req->delivery_info['channel']->basic_ack($req->delivery_info['delivery_tag']);
+        $uid = (string) unserialize($msg->body);
+
+        $convertingProgress = parse_ini_file($this->getPathToTemp().$uid.'.progress');
+        $fileInfo = parse_ini_file($this->getPathToTemp().$uid.'.info');
+
+        return $this->statusChecker->culcProgress($convertingProgress, $fileInfo);
+    }
+
+    private function getPathToTemp()
+    {
+        return __DIR__.'/../../../temp/';
     }
 }
