@@ -95,6 +95,6 @@ old_sound_rabbit_mq:
     rpc_servers:
         converting_status:
             connection: default
-            callback:   converter.status.consumer
+            callback:   converter.progress.consumer
             qos_options: {prefetch_size: 0, prefetch_count: 1, global: false}
             queue_options: {name: converting_status_queue, durable: false, auto_delete: true}

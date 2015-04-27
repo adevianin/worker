@@ -5,7 +5,7 @@ namespace AppBundle\Consumers;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 
-class StatusConsumer implements ConsumerInterface
+class ProgressConsumer implements ConsumerInterface
 {
     private $statusChecker;
 

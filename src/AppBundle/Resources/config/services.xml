@@ -25,7 +25,7 @@
     		</call>
 	    </service>
 
-	    <service id="converter.status.consumer" class="AppBundle\Consumers\StatusConsumer">
+	    <service id="converter.progress.consumer" class="AppBundle\Consumers\ProgressConsumer">
 	    	<argument type="service" id="converter.status.checker" />
 	    </service>
 
