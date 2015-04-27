@@ -28,7 +28,13 @@ class ConvertAudioConsumer implements ConsumerInterface
 
             $pid = pcntl_fork();
             if ($pid == 0) {
-                exec(sprintf('ffmpeg -i %s %s.%s', $tempFilePath, $tempFilePath, $data['format']));
+                //write file duration to {filename}.info in seconds
+                exec(sprintf('
+            		entry=$(ffprobe -i %s -show_entries format=duration -v quiet -of csv="p=0");
+					echo "duration="$entry >> %s.info;
+            	', $tempFilePath, $tempFilePath));
+
+                exec(sprintf('ffmpeg -progress %s.progress -i %s %s.%s', $tempFilePath, $tempFilePath, $tempFilePath, $data['format']));
 
                 $this->resultsProducer->publish(serialize(array(
                     'fileContent' => file_get_contents($convertedFilePath),
