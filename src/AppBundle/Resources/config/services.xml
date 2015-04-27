@@ -24,6 +24,9 @@
     			<argument>%results.producer.exchange.params%</argument>
     		</call>
 	    </service>
+	    
+	    <service id="converter.status" class="AppBundle\Consumers\StatusConsumer">
+	    </service>
 
     </services>
 </container>
