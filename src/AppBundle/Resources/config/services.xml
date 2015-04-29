@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services
+        http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+		<parameter key="results.producer.exchange.params" type="collection">
+			<parameter key="name" type="string">results</parameter>
+			<parameter key="type" type="string">fanout</parameter>
+		</parameter>
+	</parameters>
+ 	<services>
+		<service id="converter" class="AppBundle\Consumers\ConvertAudioConsumer">
+			<argument type="service" id="resultsProducer" />
+			<argument type="service" id="logger" />
+	    </service>
+
+	    <service id="resultsProducer" class="AppBundle\Services\MultiProcProducer">
+    		<argument>%rabbit_connection.address%</argument>
+    		<argument>%rabbit_connection.port%</argument>
+    		<argument>%rabbit_connection.login%</argument>
+    		<argument>%rabbit_connection.pass%</argument>
+    		<call method="setExchangeOptions">
+    			<argument>%results.producer.exchange.params%</argument>
+    		</call>
+	    </service>
+
+	    <service id="converter.progress.consumer" class="AppBundle\Consumers\ProgressConsumer">
+	    	<argument type="service" id="converter.status.checker" />
+	    </service>
+
+	    <service id="converter.status.checker" class="AppBundle\Services\StatusChecker">
+	    </service>
+
+    </services>
+</container>
